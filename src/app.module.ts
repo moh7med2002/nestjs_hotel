@@ -9,9 +9,12 @@ import { AdminModule } from './modules/admin/admin.module';
 import { UserModule } from './modules/user/user.module';
 import { RoomModule } from './modules/room/room.module';
 import { RoomImage } from './modules/roomImage/roomImage.entity';
+import { BookingModule } from './modules/booking/booking.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
+    CacheModule.register({ isGlobal: true, ttl: 5 }),
     JwtModule.register({ global: true, secret: 'token' }),
     MulterModule.registerAsync({
       useFactory: () => ({
@@ -24,6 +27,7 @@ import { RoomImage } from './modules/roomImage/roomImage.entity';
     UserModule,
     RoomModule,
     RoomImage,
+    BookingModule,
   ],
   controllers: [AppController],
 })

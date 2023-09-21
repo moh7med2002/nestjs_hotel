@@ -25,9 +25,6 @@ export class Booking extends Model {
   @Column({ type: DataType.DOUBLE, allowNull: false, defaultValue: 0 })
   price: number;
 
-  @Column({ type: DataType.BOOLEAN, allowNull: false })
-  isPaid: boolean;
-
   @Column({
     type: DataType.ENUM(BookingStatus.accept, BookingStatus.reject),
     defaultValue: BookingStatus.accept,
@@ -51,7 +48,11 @@ export class Booking extends Model {
   @Column({ type: DataType.VIRTUAL })
   get active(): boolean | null {
     const currentDate = new Date();
-    if (currentDate >= this.startDate && currentDate <= this.endDate) {
+    if (
+      currentDate >= new Date(this.startDate) &&
+      currentDate <= new Date(this.endDate) &&
+      this.status === BookingStatus.accept
+    ) {
       return true;
     }
     return false;

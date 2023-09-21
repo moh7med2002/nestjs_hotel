@@ -15,10 +15,10 @@ export const databaseProviders = [
         port: 3306,
         username: 'root',
         password: '059283805928388',
-        database: 'hotel',
+        database: 'hotels',
       });
       sequelize.addModels([Admin, User, Room, RoomImage, Booking]);
-      await sequelize.sync({ alter: true });
+      await sequelize.sync({ alter: false });
       return sequelize;
     },
   },

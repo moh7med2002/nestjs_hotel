@@ -8,6 +8,7 @@ import { generateToken } from 'src/common/util/generateToken';
 import { VerifyPassword, hashPassword } from 'src/common/util/passwordUtil';
 import { User } from './user.entity';
 import { UserLoginDto, UserSignupDto } from './dto';
+import { Role } from 'src/common/types/role.enum';
 
 @Injectable()
 export class UserService {
@@ -49,7 +50,7 @@ export class UserService {
       throw new ForbiddenException('Invalid password');
     }
     delete isUserFound.password;
-    const payload = { userId: isUserFound.id, role: 'user' };
+    const payload = { userId: isUserFound.id, role: Role.User };
     const access_token = generateToken(payload);
     const { password, ...others } = isUserFound.toJSON();
     return { msg: 'Login success', user: others, token: access_token };

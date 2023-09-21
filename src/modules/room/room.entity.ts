@@ -1,8 +1,30 @@
-import { Column, Table, Model, DataType, HasMany } from 'sequelize-typescript';
+import {
+  Column,
+  Table,
+  Model,
+  DataType,
+  HasMany,
+  Scopes,
+} from 'sequelize-typescript';
 import { RoomImage } from '../roomImage/roomImage.entity';
 import { Booking } from '../booking/booking.entity';
+import { Sequelize } from 'sequelize';
 
 @Table
+@Scopes(() => ({
+  withBookingCount: {
+    attributes: {
+      include: [
+        [
+          Sequelize.literal(
+            '(SELECT COUNT(*) FROM `bookings` WHERE `bookings`.`roomId` = `Room`.`id`)',
+          ),
+          'bookingCount',
+        ],
+      ],
+    },
+  },
+}))
 export class Room extends Model {
   @Column({ allowNull: false, autoIncrement: true, primaryKey: true })
   id: number;
